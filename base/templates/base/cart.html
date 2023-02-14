@@ -1,7 +1,73 @@
 {% extends 'home.html' %}
-
+{% load static %}
 {% block content %}
 
-<h3>Cart</h3>
+    <!-- inner page section -->
+      <section class="inner_page_head">
+         <div class="container_fuild">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="full">
+                     <h3>Cart</h3>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- end inner page section -->
+
+      <div class="container_fuild text-center table-responsive">
+
+          <table class="table">
+            <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Item Name</th>
+                  <th>Price</th>
+                  <th>Quantity</th>
+                  <th>Total</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr>
+                  <th><img style="width:55px; height:55px" src="{% static 'images/p1.png' %}" alt=""></th>
+                  <td>Men's Shirt</td>
+                  <td>$75</td>
+                  <td>
+                    <div>1</div>
+                    <div>
+                        <img style="width:10px; height:10px" src="{% static 'images/a_up.png' %}" alt="">
+                        <img style="width:10px; height:10px" src="{% static 'images/a_dn.png' %}" alt="">
+                    </div>
+                  </td>
+                  <td>$75</td>
+                </tr>
+                <tr>
+                  <th><img style="width:55px; height:55px" src="{% static 'images/p2.png' %}" alt=""></th>
+                  <td>Men's Shirt</td>
+                  <td>$80</td>
+                  <td>
+                    <div>2</div>
+                    <div>
+                        <img style="width:10px; height:10px" src="{% static 'images/a_up.png' %}" alt="">
+                        <img style="width:10px; height:10px" src="{% static 'images/a_dn.png' %}" alt="">
+                    </div>
+                  </td>
+                  <td>$160</td>
+                </tr>
+            </tbody>
+          </table>
+
+          <table class="table table-borderless mt-4 mb-4">
+              <tr>
+                  <th><h3>Items: <strong>2</strong></h3></th>
+                  <th><h3>Total: <strong>$3</strong></h3></th>
+                  <th>
+                      <a class="btn btn-secondary" href="{% url 'checkout' %}" role="button">Checkout</a>
+                  </th>
+              </tr>
+          </table>
+      </div>
 
 {% endblock %}
