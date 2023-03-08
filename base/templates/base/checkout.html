@@ -2,6 +2,66 @@
 
 {% block content %}
 
-<h3>checkout</h3>
+<!-- inner page section -->
+<section class="inner_page_head">
+ <div class="container_fuild">
+    <div class="row">
+       <div class="col-md-12">
+          <div class="full">
+             <h3>checkout</h3>
+          </div>
+       </div>
+    </div>
+ </div>
+</section>
+<!-- end inner page section -->
+
+<div class="container-fluid d-flex justify-content-center mt-3 mb-3">
+    <form>
+      <div class="row">
+        <div class="col text-center shadow p-5 m-2 bg-white rounded">
+            <div class="row">
+                <div class="col">
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Email">
+                        </div>
+                    </div>
+                    <hr>
+                        <p>Shipping Information</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="Address">
+                            <input type="text" class="form-control" placeholder="State">
+                            <input type="text" class="form-control" placeholder="Zip code">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" placeholder="City">
+                            <input type="text" class="form-control" placeholder="Zip code">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <button type="button" class="btn btn-primary btn-block">Continue</button>
+            </div>
+        </div>
+
+        <div class="col shadow p-5 m-2 bg-white rounded">
+            <a class="btn btn-outline-secondary" href="{% url 'cart' %}" role="button">Back to cart</a>
+            <hr>
+                <p>Order Summary</p>
+            <hr>
+            <p>Items: 2</p>
+            <p>Total: $75</p>
+        </div>
+      </div>
+    </form>
+</div>
+
 
 {% endblock %}

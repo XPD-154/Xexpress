@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-    <!-- inner page section -->
+      <!-- inner page section -->
       <section class="inner_page_head">
          <div class="container_fuild">
             <div class="row">
@@ -16,7 +16,7 @@
       </section>
       <!-- end inner page section -->
 
-      <div class="container_fuild text-center table-responsive">
+      <div class="container-fluid text-center table-responsive">
 
           <table class="table">
             <thead>
@@ -30,39 +30,28 @@
             </thead>
 
             <tbody>
+                {% for item in items %}
                 <tr>
-                  <th><img style="width:55px; height:55px" src="{% static 'images/p1.png' %}" alt=""></th>
-                  <td>Men's Shirt</td>
-                  <td>$75</td>
+                  <th><img style="width:55px; height:55px" src="{{item.product.imageURL}}" alt=""></th>
+                  <td>{{item.product.name}}</td>
+                  <td>${{item.product.price}}</td>
                   <td>
-                    <div>1</div>
+                    <div>{{item.quantity}}</div>
                     <div>
                         <img style="width:10px; height:10px" src="{% static 'images/a_up.png' %}" alt="">
                         <img style="width:10px; height:10px" src="{% static 'images/a_dn.png' %}" alt="">
                     </div>
                   </td>
-                  <td>$75</td>
+                  <td>${{item.get_total}}</td>
                 </tr>
-                <tr>
-                  <th><img style="width:55px; height:55px" src="{% static 'images/p2.png' %}" alt=""></th>
-                  <td>Men's Shirt</td>
-                  <td>$80</td>
-                  <td>
-                    <div>2</div>
-                    <div>
-                        <img style="width:10px; height:10px" src="{% static 'images/a_up.png' %}" alt="">
-                        <img style="width:10px; height:10px" src="{% static 'images/a_dn.png' %}" alt="">
-                    </div>
-                  </td>
-                  <td>$160</td>
-                </tr>
+                {% endfor %}
             </tbody>
           </table>
 
           <table class="table table-borderless mt-4 mb-4">
               <tr>
                   <th><h3>Items: <strong>2</strong></h3></th>
-                  <th><h3>Total: <strong>$3</strong></h3></th>
+                  <th><h3>Total: <strong>${{item.order.get_cart_total}}</strong></h3></th>
                   <th>
                       <a class="btn btn-secondary" href="{% url 'checkout' %}" role="button">Checkout</a>
                   </th>
