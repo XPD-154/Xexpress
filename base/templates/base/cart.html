@@ -50,8 +50,8 @@
 
           <table class="table table-borderless mt-4 mb-4">
               <tr>
-                  <th><h3>Items: <strong>2</strong></h3></th>
-                  <th><h3>Total: <strong>${{item.order.get_cart_total}}</strong></h3></th>
+                  <th><h3>Items: <strong>{{order.get_cart_items}}</strong></h3></th>
+                  <th><h3>Total: <strong>${{order.get_cart_total}}</strong></h3></th>
                   <th>
                       <a class="btn btn-secondary" href="{% url 'checkout' %}" role="button">Checkout</a>
                   </th>

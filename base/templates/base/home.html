@@ -22,6 +22,8 @@
       <link href="{% static 'css/style.css' %}" rel="stylesheet" />
       <!-- responsive style -->
       <link href="{% static 'css/responsive.css' %}" rel="stylesheet" />
+
+      <script type="text/javascript"> var user = '{{request.user}}' </script>
    </head>
    <body>
       <div class="hero_area">
@@ -199,5 +201,7 @@
       <script src="{% static 'js/bootstrap.js' %}"></script>
       <!-- custom js -->
       <script src="{% static 'js/custom.js' %}"></script>
+
+      <script src="{% static 'js/cart.js' %}"></script>
    </body>
 </html>

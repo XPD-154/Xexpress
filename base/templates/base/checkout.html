@@ -56,8 +56,8 @@
             <hr>
                 <p>Order Summary</p>
             <hr>
-            <p>Items: 2</p>
-            <p>Total: $75</p>
+            <p>Items: {{order.get_cart_items}}</p>
+            <p>Total: ${{order.get_cart_total}}</p>
         </div>
       </div>
     </form>
