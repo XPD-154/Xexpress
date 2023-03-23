@@ -34,7 +34,7 @@
                 <tr>
                   <th><img style="width:55px; height:55px" src="{{item.product.imageURL}}" alt=""></th>
                   <td>{{item.product.name}}</td>
-                  <td>${{item.product.price}}</td>
+                  <td>${{item.product.price|floatformat:2}}</td>
                   <td>
                     <div>{{item.quantity}}</div>
                     <div>
@@ -42,7 +42,7 @@
                         <img style="width:10px; height:10px" src="{% static 'images/a_dn.png' %}" alt="">
                     </div>
                   </td>
-                  <td>${{item.get_total}}</td>
+                  <td>${{item.get_total|floatformat:2}}</td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -51,7 +51,7 @@
           <table class="table table-borderless mt-4 mb-4">
               <tr>
                   <th><h3>Items: <strong>{{order.get_cart_items}}</strong></h3></th>
-                  <th><h3>Total: <strong>${{order.get_cart_total}}</strong></h3></th>
+                  <th><h3>Total: <strong>${{order.get_cart_total|floatformat:2}}</strong></h3></th>
                   <th>
                       <a class="btn btn-secondary" href="{% url 'checkout' %}" role="button">Checkout</a>
                   </th>
