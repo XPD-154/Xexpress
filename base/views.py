@@ -53,7 +53,7 @@ def product(request):
 
     else:
         items = []
-        order = {'get_cart_total':0, 'get_cart_items':0}
+        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 
         #get cart item total
         cartItemsNumber = order['get_cart_items']
@@ -82,7 +82,7 @@ def cart(request):
 
     else:
         items = []
-        order = {'get_cart_total':0, 'get_cart_items':0}
+        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 
         #get cart item total
         cartItemsNumber = order['get_cart_items']
@@ -101,8 +101,9 @@ def checkout(request):
         #get all orderitems that have order on top as parents
         items = order.orderitem_set.all()
     else:
+        #create empty cart for non-logged users
         items = []
-        order = {'get_cart_total':0, 'get_cart_items':0}
+        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
 
     #get cart item total
     cartData = cartItemsCheck(request)

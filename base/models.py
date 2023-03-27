@@ -38,6 +38,20 @@ class Order(models.Model):
         return str(self.id)
 
     @property
+    def shipping(self):
+        #set shipping by default to false
+        shipping = False
+        #get all items related to a row of order
+        orderitems = self.orderitem_set.all()
+        #loop through the items
+        for i in orderitems:
+            #check if an item's digital column is set to false(not a digital product)
+            if i.product.digital == False:
+                #create shipping for that item
+                shipping = True
+        return shipping
+
+    @property
     def get_cart_total(self):
         #get all items related to a row of order
         orderitems = self.orderitem_set.all()

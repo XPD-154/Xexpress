@@ -38,8 +38,8 @@
                   <td>
                     <div>{{item.quantity}}</div>
                     <div>
-                        <img style="width:10px; height:10px" src="{% static 'images/a_up.png' %}" alt="">
-                        <img style="width:10px; height:10px" src="{% static 'images/a_dn.png' %}" alt="">
+                        <img style="width:10px; height:10px" class="update-cart" data-product="{{item.product.id}}" data-action="remove" src="{% static 'images/a_up.png' %}" alt="">
+                        <img style="width:10px; height:10px" class="update-cart" data-product="{{item.product.id}}" data-action="add" src="{% static 'images/a_dn.png' %}" alt="">
                     </div>
                   </td>
                   <td>${{item.get_total|floatformat:2}}</td>

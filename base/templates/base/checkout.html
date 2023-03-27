@@ -17,39 +17,54 @@
 <!-- end inner page section -->
 
 <div class="container-fluid d-flex justify-content-center mt-3 mb-3">
-    <form>
+
       <div class="row">
+
+
         <div class="col text-center shadow p-5 m-2 bg-white rounded">
-            <div class="row">
-                <div class="col">
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Name">
+            <form id="form">
+                <div class="row mb-2">
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Name">
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" placeholder="Email">
+                            </div>
                         </div>
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Email">
-                        </div>
-                    </div>
-                    <hr>
-                        <p>Shipping Information</p>
-                    <hr>
-                    <div class="row">
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="Address">
-                            <input type="text" class="form-control" placeholder="State">
-                            <input type="text" class="form-control" placeholder="Zip code">
-                        </div>
-                        <div class="col">
-                            <input type="text" class="form-control" placeholder="City">
-                            <input type="text" class="form-control" placeholder="Zip code">
+                        <div id="shipping-info">
+                            <hr>
+                                <p>Shipping Information</p>
+                            <hr>
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" class="form-control m-1" placeholder="Address">
+                                    <input type="text" class="form-control m-1" placeholder="State">
+                                    <input type="text" class="form-control m-1" placeholder="Zip code">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control m-1" placeholder="City">
+                                    <input type="text" class="form-control m-1" placeholder="Zip code">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <button type="button" class="btn btn-primary btn-block">Continue</button>
+                <div class="row">
+                    <button type="submit" class="btn btn-primary btn-block" id="form-button">Continue</button>
+                </div>
+            </form>
+
+            <hr>
+
+            <div class="row" id="payment-info" style="display:none;">
+                <div class="col m-2">
+                    <p>Paypal</p>
+                </div>
             </div>
         </div>
+
 
         <div class="col shadow p-5 m-2 bg-white rounded">
             <a class="btn btn-outline-secondary" href="{% url 'cart' %}" role="button">Back to cart</a>
@@ -59,9 +74,36 @@
             <p>Items: {{order.get_cart_items}}</p>
             <p>Total: ${{order.get_cart_total}}</p>
         </div>
+
       </div>
-    </form>
+
 </div>
 
+<script type="text/javascript">
+
+    //if items do not require shipping, shipping info should not should
+    var shipping = '{{order.shipping}}'
+
+    if (shipping == 'False'){
+        document.getElementById('shipping-info').innerHTML = ''
+    }
+
+    //based on shipping form submit button, show payment option
+    var form = document.getElementById('form')
+    form.addEventListener('submit', function(e){
+        e.preventDefault()
+        console.log('form submitted.....')
+        var formButton = document.getElementById('form-button');
+        var paymentInfo = document.getElementById('payment-info');
+
+        if(paymentInfo.style.display == "none"){
+
+            paymentInfo.style.display = "block";
+            formButton.style.display = "none";
+        }
+    })
+
+
+</script>
 
 {% endblock %}
