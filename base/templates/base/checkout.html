@@ -16,35 +16,38 @@
 </section>
 <!-- end inner page section -->
 
-<div class="container-fluid d-flex justify-content-center mt-3 mb-3">
+<div class="container justify-content-center mt-3 mb-3">
 
       <div class="row">
-
 
         <div class="col text-center shadow p-5 m-2 bg-white rounded">
             <form id="form">
                 <div class="row mb-2">
                     <div class="col">
-                        <div class="row">
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Name">
-                            </div>
-                            <div class="col">
-                                <input type="text" class="form-control" placeholder="Email">
+
+                        <div id="user-info">
+                            <div class="row">
+                                <div class="col">
+                                    <input type="text" class="form-control" name="name" placeholder="Name">
+                                </div>
+                                <div class="col">
+                                    <input type="text" class="form-control" name="email" placeholder="Email">
+                                </div>
                             </div>
                         </div>
+
                         <div id="shipping-info">
                             <hr>
                                 <p>Shipping Information</p>
                             <hr>
                             <div class="row">
                                 <div class="col">
-                                    <input type="text" class="form-control m-1" placeholder="Address">
-                                    <input type="text" class="form-control m-1" placeholder="State">
-                                    <input type="text" class="form-control m-1" placeholder="Zip code">
+                                    <input type="text" class="form-control m-1" name="address" placeholder="Address">
+                                    <input type="text" class="form-control m-1" name="state" placeholder="State">
+                                    <input type="text" class="form-control m-1" name="zipcode" placeholder="Zip code">
                                 </div>
                                 <div class="col">
-                                    <input type="text" class="form-control m-1" placeholder="City">
+                                    <input type="text" class="form-control m-1" name="city" placeholder="City">
                                     <input type="text" class="form-control m-1" placeholder="Zip code">
                                 </div>
                             </div>
@@ -60,7 +63,7 @@
 
             <div class="row" id="payment-info" style="display:none;">
                 <div class="col m-2">
-                    <p>Paypal</p>
+                    <p>Paypal</p><button type="submit" class="btn btn-secondary" id="payment-button">pay now</button>
                 </div>
             </div>
         </div>
@@ -84,8 +87,29 @@
     //if items do not require shipping, shipping info should not should
     var shipping = '{{order.shipping}}'
 
+    //total value
+    var total = '{{order.get_cart_total}}'
+
     if (shipping == 'False'){
         document.getElementById('shipping-info').innerHTML = ''
+    }
+
+    //if user is authenticated, don't show user form
+    if (user != 'AnonymousUser'){
+        document.getElementById('user-info').innerHTML = ''
+    }
+
+    //show payment option if no shipping and user is authenticated
+    if (shipping == 'False' && user != 'AnonymousUser'){
+
+        var form = document.getElementById('form');
+        var paymentInfo = document.getElementById('payment-info');
+
+        if(paymentInfo.style.display == "none"){
+
+            paymentInfo.style.display = "block";
+            form.style.display = "none";
+        }
     }
 
     //based on shipping form submit button, show payment option
@@ -101,8 +125,47 @@
             paymentInfo.style.display = "block";
             formButton.style.display = "none";
         }
+
     })
 
+    //check if payment button is clicked
+    document.getElementById('payment-button').addEventListener('click', function(e){
+        submitFormData()
+    })
+
+    //action to carry out once payment button is clicked
+    function submitFormData(){
+        console.log('payment button clicked......')
+
+        //get user name, email and total
+        var userFormData = {
+            'name':null,
+            'email':null,
+            'total':total,
+        }
+
+        //shipping for digital products is null
+        var shippingFormData = {
+            'address':null,
+            'city':null,
+            'state':null,
+            'zipcode':null,
+        }
+
+        //change shipping information in shippingFormData for non-digital products
+        if (shipping != 'False'){
+            shippingFormData.address = form.address.value
+            shippingFormData.city = form.city.value
+            shippingFormData.state = form.state.value
+            shippingFormData.zipcode = form.zipcode.value
+        }
+
+        //change user information in userFormData for Anonymous user
+        if (user == 'AnonymousUser'){
+            userFormData.name = form.name.value
+            userFormData.email = form.email.value
+        }
+    }
 
 </script>
 
