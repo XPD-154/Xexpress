@@ -27,6 +27,7 @@
 
          var user = '{{request.user}}'
 
+         //get csrftoken for forms
          function getCsrfToken(name) {
              var cookieValue = null;
              if (document.cookie && document.cookie !== '') {
@@ -44,8 +45,8 @@
          }
          var csrftoken = getCsrfToken('csrftoken');
 
+         //create cookie for user thats not logged in
          function getCookie(name) {
-
             //split cookie string and get all individual name=value pairs in an array
             var cookieArr = document.cookie.split(";");
 
@@ -64,10 +65,11 @@
             return null;
          }
 
+         //create cart based on the 'getCookie' function
          var cart = JSON.parse(getCookie('cart'));
          console.log('Cart:', cart);
 
-
+         //if no cart has been set by the user, create an empty one
          if(cart == undefined){
             cart = {}
             console.log('Cart was Created!', cart)

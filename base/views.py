@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from .models import *                   #import all models into view
+from .utils import *                    #import all functions into view
 from django.http import JsonResponse
 import requests
 import json
@@ -7,27 +8,16 @@ import datetime
 
 #Create your views here.
 
-'''check and update cart item total based on items added'''
-
-def cartItems(request, number):
-    request.session['cartItems'] = number
-    return request.session['cartItems']
-
-def cartItemsCheck(request):
-    if 'cartItems' in request.session:
-        cartData = request.session['cartItems']
-    else:
-        cartData = cartItems(request, 0)
-
-    return cartData
-
-'''end of check and update cart item total based on items added'''
-
 def index(request):
     products = Product.objects.all().order_by('id')[:3]
 
-    #get cart item total
-    cartData = cartItemsCheck(request)
+    #check if user is authenticated
+    if request.user.is_authenticated:
+        #get cart item total
+        cartData = cartItemsCheck(request)
+    else:
+        cookieData = cookieCart(request)
+        cartData = cookieData['cartItems']
 
     context = {'products':products, 'cartItems':cartData}
     return render(request, 'base/index.html', context)
@@ -53,8 +43,12 @@ def product(request):
         cartData = cartItems(request, cartItemsNumber)
 
     else:
-        items = []
-        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+        #items = []
+        #order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
+
+        cookieData = cookieCart(request)
+        items = cookieData['items']
+        order = cookieData['order']
 
         #get cart item total
         cartItemsNumber = order['get_cart_items']
@@ -81,13 +75,12 @@ def cart(request):
         cartItemsNumber = order.get_cart_items
         cartData = cartItems(request, cartItemsNumber)
 
+    #user thats not logged in
     else:
-        items = []
-        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-
-        #get cart item total
-        cartItemsNumber = order['get_cart_items']
-        cartData = cartItems(request, cartItemsNumber)
+        cookieData = cookieCart(request)
+        cartData = cookieData['cartItems']
+        items = cookieData['items']
+        order = cookieData['order']
 
     context = {'items':items, 'order':order, 'cartItems':cartData}
     return render(request, 'base/cart.html', context)
@@ -101,13 +94,19 @@ def checkout(request):
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
         #get all orderitems that have order on top as parents
         items = order.orderitem_set.all()
+
+        #get cart item total
+        cartData = cartItemsCheck(request)
     else:
+        '''
         #create empty cart for non-logged users
         items = []
         order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-
-    #get cart item total
-    cartData = cartItemsCheck(request)
+        '''
+        cookieData = cookieCart(request)
+        cartData = cookieData['cartItems']
+        items = cookieData['items']
+        order = cookieData['order']
 
     context = {'items':items, 'order':order, 'cartItems':cartData}
     return render(request, 'base/checkout.html', context)
