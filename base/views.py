@@ -31,28 +31,20 @@ def product(request):
 
     #check if user is authenticated
     if request.user.is_authenticated:
-        #get customer
-        customer = request.user.customer
-        #check for customer's order create one or check for existing
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        #get all orderitems that have order on top as parents
-        items = order.orderitem_set.all()
+
+        data = cartInfo(request)
+        items = data['items']
+        order = data['order']
 
         #get cart item total
         cartItemsNumber = order.get_cart_items
         cartData = cartItems(request, cartItemsNumber)
 
     else:
-        #items = []
-        #order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-
         cookieData = cookieCart(request)
         items = cookieData['items']
         order = cookieData['order']
-
-        #get cart item total
-        cartItemsNumber = order['get_cart_items']
-        cartData = cartItems(request, cartItemsNumber)
+        cartData = cookieData['cartItems']
 
     context = {'products':products, 'cartItems':cartData}
     return render(request, 'base/product.html', context)
@@ -64,12 +56,10 @@ def contact(request):
 def cart(request):
     #check if user is authenticated
     if request.user.is_authenticated:
-        #get customer
-        customer = request.user.customer
-        #check for customer's order create one or check for existing
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        #get all orderitems that have order on top as parents
-        items = order.orderitem_set.all()
+
+        data = cartInfo(request)
+        items = data['items']
+        order = data['order']
 
         #get cart item total
         cartItemsNumber = order.get_cart_items
@@ -88,21 +78,14 @@ def cart(request):
 def checkout(request):
     #check if user is authenticated
     if request.user.is_authenticated:
-        #get customer
-        customer = request.user.customer
-        #check for customer's order create one or check for existing
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        #get all orderitems that have order on top as parents
-        items = order.orderitem_set.all()
+
+        data = cartInfo(request)
+        items = data['items']
+        order = data['order']
 
         #get cart item total
         cartData = cartItemsCheck(request)
     else:
-        '''
-        #create empty cart for non-logged users
-        items = []
-        order = {'get_cart_total':0, 'get_cart_items':0, 'shipping':False}
-        '''
         cookieData = cookieCart(request)
         cartData = cookieData['cartItems']
         items = cookieData['items']

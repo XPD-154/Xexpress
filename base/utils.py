@@ -78,3 +78,18 @@ def cookieCart(request):
     return {'items':items, 'order':order, 'cartItems':cartData}
 
 '''function for shopping associated with user thats not logged in'''
+
+'''function for handling shopping cart, for logged in user'''
+
+def cartInfo(request):
+
+    #get customer
+    customer = request.user.customer
+    #check for customer's order create one or check for existing
+    order, created = Order.objects.get_or_create(customer=customer, complete=False)
+    #get all orderitems that have order on top as parents
+    items = order.orderitem_set.all()
+
+    return {'items':items, 'order':order}
+
+'''end of function for handling shopping cart, for logged in user'''
