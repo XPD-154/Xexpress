@@ -32,6 +32,7 @@ def product(request):
     #check if user is authenticated
     if request.user.is_authenticated:
 
+        #call function to handle request for logged in user
         data = cartInfo(request)
         items = data['items']
         order = data['order']
@@ -41,6 +42,7 @@ def product(request):
         cartData = cartItems(request, cartItemsNumber)
 
     else:
+        #call function to handle request for anonymous user
         cookieData = cookieCart(request)
         items = cookieData['items']
         order = cookieData['order']
@@ -57,6 +59,7 @@ def cart(request):
     #check if user is authenticated
     if request.user.is_authenticated:
 
+        #call function to handle request for logged in user
         data = cartInfo(request)
         items = data['items']
         order = data['order']
@@ -67,6 +70,7 @@ def cart(request):
 
     #user thats not logged in
     else:
+        #call function to handle request for anonymous user
         cookieData = cookieCart(request)
         cartData = cookieData['cartItems']
         items = cookieData['items']
@@ -79,6 +83,7 @@ def checkout(request):
     #check if user is authenticated
     if request.user.is_authenticated:
 
+        #call function to handle request for logged in user
         data = cartInfo(request)
         items = data['items']
         order = data['order']
@@ -86,6 +91,7 @@ def checkout(request):
         #get cart item total
         cartData = cartItemsCheck(request)
     else:
+        #call function to handle request for anonymous user
         cookieData = cookieCart(request)
         cartData = cookieData['cartItems']
         items = cookieData['items']
@@ -126,29 +132,76 @@ def updateItem(request):
 
 def processOrder(request):
     #print('Data:', request.body)
+    #get date for the processing of transaction
     transaction_id = datetime.datetime.now().timestamp()
+
+    #load items from javascript API and make items available
     data = json.loads(request.body)
 
+    #authenticated user
     if request.user.is_authenticated:
+
+        #get information associated with the user
         customer = request.user.customer
         order, created = Order.objects.get_or_create(customer=customer, complete=False)
-        total = float(data['form']['total'])
-        order.transaction_id = transaction_id
 
-        if total == order.get_cart_total:
-            order.complete = True
-        order.save()
-
-        if order.shipping == True:
-            ShippingAddress.objects.create(
-                customer = customer,
-                order = order,
-                address = data['shipping']['address'],
-                city = data['shipping']['city'],
-                state = data['shipping']['state'],
-                zipcode = data['shipping']['zipcode']
-            )
+    #anonymous user
     else:
         print('User is not logged in..')
+
+        print('COOKIES:', request.COOKIES)
+
+        #get user name and email from form
+        name = data['form']['name']
+        email = data['form']['email']
+
+        #call function for handling cart for anonymous user to get items
+        cookieData = cookieCart(request)
+        items = cookieData['items']
+
+        #create anonymous customer in database or retrieve based on email
+        customer, created = Customer.objects.get_or_create(
+            email=email
+        )
+
+        #save customer name and save
+        customer.name = name
+        customer.save()
+
+        #create order for customer in database
+        order = Order.objects.create(
+            customer = customer,
+            complete = False,
+        )
+
+        #loop through items in cart and create each order item
+        for item in items:
+            product = Product.objects.get(id=item['product']['id'])
+
+            orderItem = OrderItem.objects.create(
+                product = product,
+                order = order,
+                quantity = item['quantity']
+            )
+
+    #get total from javascript API data
+    total = float(data['form']['total'])
+    order.transaction_id = transaction_id
+
+    #compare 'total' from javascript API to 'total' from function in order model, and save
+    if total == order.get_cart_total:
+        order.complete = True
+    order.save()
+
+    #if shipping is true, create shipping information
+    if order.shipping == True:
+        ShippingAddress.objects.create(
+            customer = customer,
+            order = order,
+            address = data['shipping']['address'],
+            city = data['shipping']['city'],
+            state = data['shipping']['state'],
+            zipcode = data['shipping']['zipcode']
+        )
 
     return JsonResponse('payment complete', safe=False)

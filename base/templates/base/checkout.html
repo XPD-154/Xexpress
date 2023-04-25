@@ -90,6 +90,7 @@
     //total value
     var total = '{{order.get_cart_total}}'
 
+    //if the value of shipping is false, let form for shipping not be displayed
     if (shipping == 'False'){
         document.getElementById('shipping-info').innerHTML = ''
     }
@@ -137,14 +138,14 @@
     function submitFormData(){
         console.log('payment button clicked......')
 
-        //get user name, email and total
+        //create a data structure for user name, email and total
         var userFormData = {
             'name':null,
             'email':null,
             'total':total,
         }
 
-        //shipping for digital products is null
+        //create a data structure for shipping
         var shippingFormData = {
             'address':null,
             'city':null,
@@ -152,7 +153,7 @@
             'zipcode':null,
         }
 
-        //change shipping information in shippingFormData for non-digital products
+        //append shipping information to shippingFormData for non-digital products
         if (shipping != 'False'){
             shippingFormData.address = form.address.value
             shippingFormData.city = form.city.value
@@ -160,7 +161,7 @@
             shippingFormData.zipcode = form.zipcode.value
         }
 
-        //change user information in userFormData for Anonymous user
+        //append user information to userFormData for Anonymous user
         if (user == 'AnonymousUser'){
             userFormData.name = form.name.value
             userFormData.email = form.email.value
@@ -188,6 +189,11 @@
         .then((data) => {
             console.log('Success:',data);
             alert('Transaction complete');
+
+            /*once transaction is complete (sent to the backend) for anonymous user, clear cart and reset cookie*/
+            cart = {}
+            document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
             window.location.href = "{% url 'product' %}"
         })
     }
