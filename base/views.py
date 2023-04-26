@@ -5,6 +5,7 @@ from django.http import JsonResponse
 import requests
 import json
 import datetime
+import decimal
 
 #Create your views here.
 
@@ -185,13 +186,14 @@ def processOrder(request):
             )
 
     #get total from javascript API data
-    total = float(data['form']['total'])
+    total = decimal.Decimal(data['form']['total'])
     order.transaction_id = transaction_id
 
     #compare 'total' from javascript API to 'total' from function in order model, and save
     if total == order.get_cart_total:
         order.complete = True
-    order.save()
+        order.save()
+
 
     #if shipping is true, create shipping information
     if order.shipping == True:
