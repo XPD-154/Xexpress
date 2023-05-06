@@ -159,19 +159,72 @@
                               </svg>
                            </a>
                         </li>
+                        <!--
                         <form class="form-inline">
                            <button class="btn  my-2 my-sm-0 nav_search-btn" type="submit">
                            <i class="fa fa-search" aria-hidden="true"></i>
                            </button>
                         </form>
+                        -->
+                        <div>
+
+                           {% if user.is_authenticated %}
+                              <!-- Button trigger modal -->
+                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa fa-user" aria-hidden="true"> {{ user.username }}</i>
+                              </button>
+
+                              <!-- Modal -->
+                              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sm" role="document">
+                                  <div class="modal-content">
+                                       <div class="modal-body">
+                                         Leaving us, so soon....
+                                       </div>
+                                       <div class="modal-footer">
+                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                         <button type="button" class="btn btn-danger"><a href="{% url 'logout' %}" style="text-decoration:none; color:#FFFFFF;">logout</a></button>
+                                       </div>
+                                  </div>
+                                </div>
+                              </div>
+                           {% else %}
+                              <!-- Button trigger modal -->
+                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">
+                                <i class="fa fa-user" aria-hidden="true"></i>
+                              </button>
+
+                              <!-- Modal -->
+                              <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-sm" role="document">
+                                  <div class="modal-content">
+                                       <div class="modal-body">
+                                         Sign in, to join us....
+                                       </div>
+                                       <div class="modal-footer">
+                                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                         <a href="{% url 'login_pg' %}" style="text-decoration:none; color:#FFFFFF;"><button type="button" class="btn btn-danger">login</button></a>
+                                       </div>
+                                  </div>
+                                </div>
+                              </div>
+                           {% endif %}
+
                      </ul>
                   </div>
                </nav>
             </div>
          </header>
          <!-- end header section -->
-         {% block content %}
 
+         {% if messages %}
+          <ul class="messages">
+              {% for message in messages %}
+              <li>{{message}}</li>
+              {% endfor %}
+          </ul>
+         {% endif %}
+         {% block content %}
 
          {% endblock %}
       <!-- footer start -->
