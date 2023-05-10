@@ -13,6 +13,7 @@ from django.contrib import messages
 
 #Create your views here.
 
+#method to handle login request
 def login_pg(request):
 
     if request.method == 'POST':
@@ -31,10 +32,12 @@ def login_pg(request):
     else:
         return render(request, "login.html")
 
+#method to handle logout request
 def logout(request):
     django_logout(request)
     return redirect('index')
 
+#method to handle sign up request
 def sign_up_pg(request):
 
     if request.method == 'POST':
@@ -78,7 +81,7 @@ def sign_up_pg(request):
 
         return render(request, "sign_up.html")
 
-
+#method to handle homepage display
 def index(request):
     products = Product.objects.all().order_by('id')[:3]
 
@@ -93,10 +96,12 @@ def index(request):
     context = {'products':products, 'cartItems':cartData}
     return render(request, 'base/index.html', context)
 
+#method to handle about page display
 def about(request):
     context = {}
     return render(request, 'base/about.html', context)
 
+#method to handle product display on a page
 def product(request):
     products = Product.objects.all()
 
@@ -122,10 +127,12 @@ def product(request):
     context = {'products':products, 'cartItems':cartData}
     return render(request, 'base/product.html', context)
 
+#method to handle display on contact us page
 def contact(request):
     context = {}
     return render(request, 'base/contact.html', context)
 
+#method to handle cart information
 def cart(request):
     #check if user is authenticated
     if request.user.is_authenticated:
@@ -150,6 +157,7 @@ def cart(request):
     context = {'items':items, 'order':order, 'cartItems':cartData}
     return render(request, 'base/cart.html', context)
 
+#method to handle checkout
 def checkout(request):
     #check if user is authenticated
     if request.user.is_authenticated:
@@ -171,6 +179,7 @@ def checkout(request):
     context = {'items':items, 'order':order, 'cartItems':cartData}
     return render(request, 'base/checkout.html', context)
 
+#method to handle update of items in cart
 def updateItem(request):
 
     #load items from javascript API and make items available
@@ -201,6 +210,7 @@ def updateItem(request):
 
     return JsonResponse('item was added', safe=False)
 
+#method to handle processing of ecommerce request
 def processOrder(request):
     #print('Data:', request.body)
     #get date for the processing of transaction

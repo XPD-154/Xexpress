@@ -77,7 +77,7 @@ def cookieCart(request):
 
     return {'items':items, 'order':order, 'cartItems':cartData}
 
-'''function for shopping associated with user thats not logged in'''
+'''end of function for shopping associated with user thats not logged in'''
 
 '''function for handling shopping cart, for logged in user'''
 

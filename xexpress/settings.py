@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
 
+    #register theme for styling admin panel
     'jazzmin',
 
     'django.contrib.admin',
@@ -141,6 +142,8 @@ MEDIA_ROOT = BASE_DIR/ 'static/images'          #actual path of the images files
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+'''styling of admin panel'''
+
 JAZZMIN_SETTINGS = {
     # title of the window (Will default to current_admin_site.site_title if absent or None)
     "site_title": "Famms Admin",
@@ -164,3 +167,5 @@ JAZZMIN_SETTINGS = {
 JAZZMIN_UI_TWEAKS = {
     "theme": "lux",
 }
+
+'''end of styling of admin panel'''
