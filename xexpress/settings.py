@@ -134,8 +134,10 @@ STATICFILES_DIRS = [
     BASE_DIR/ 'static'                          #actual path of the static files
 ]
 
+STATIC_ROOT = BASE_DIR/ 'static_files'
+
 MEDIA_URL = '/images/'                          #name of image files path to reference in templates
-MEDIA_ROOT = BASE_DIR/ 'static/images'          #actual path of the images files
+MEDIA_ROOT = BASE_DIR/ 'static_files/images'          #actual path of the images files
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
